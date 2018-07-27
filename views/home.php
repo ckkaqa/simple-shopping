@@ -7,6 +7,10 @@
 				  <strong>Success!</strong> <?=$this->data['message'];?>
 				</div>
 			<?php endif; ?>
+			<div class="alert alert-warning">
+			  <strong>Note:</strong> You currently have $<?=$_SESSION['balance'];?> in your account!
+			</div>
+
 			<table class="table table-striped">
 			    <thead>
 			      <tr>
@@ -21,8 +25,11 @@
 			    	<?php if(count($this->data['products']) > 0) : ?>
 			    		<?php foreach ($this->data['products'] as $product):?>
 					      <tr>
-					        <td><?=$product['name']?></td>
-					        <td>
+					        <td class = "text-center">
+					        	<img class="product-img-center-block product-img img img-responsive" src="assets/img/<?=$product['thumbnail_name']; ?>" alt="<?=$product['thumbnail_name']; ?>">
+					        	<?=$product['name']?>
+					        	</td>
+					        <td class = "cell-center">
 					        	<div class="btn-group col-md-8 col-sm-5 col-xs-5" data-toggle="buttons">
 				                    <label class="btn btn-default click_rate">
 				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo1" value="1">1</label>
@@ -36,9 +43,15 @@
 				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo5" value="5">5</label>
 				                </div>
 					        </td>
-					        <td><?=round($product['avg_rating'],2);?></td>
-					        <td>$<?=$product['price']?></td>
-					        <td>
+					        <td class = "cell-center">
+					        	<?php if(session_id() == $product['session_id']):?>
+					        		<?=round($product['avg_rating'],2);?>
+					        	<?php else: ?>
+					        		0
+					        	<?php endif;?>
+					        </td>
+					        <td class = "cell-center">$<?=$product['price']?></td>
+					        <td class = "cell-center">
 					        	<form method = "post" action = "index.php">
 					        		<input type="hidden" name="product_id" value = "<?=$product['id']?>"/>
 					        		<button data-id = "<?=$product['id']?>" class = "btn btn-sm btn-success add_cart">Add to cart</button>	
@@ -86,9 +99,12 @@
 						    		<?php foreach ($this->data['orders'] as $product):?>
 						    		  <?php $total_payment = $total_payment + $product['total']; ?>
 								      <tr>
-								        <td><?=$product['name']?></td>
-								        <td>$<?=$product['price']?></td>
 								        <td>
+								        	<img class="product-img-center-block product-img img img-responsive" src="assets/img/<?=$product['thumbnail_name']; ?>" alt="<?=$product['thumbnail_name']; ?>">
+								        	<?=$product['name']?>
+								        </td>
+								        <td class = "cell-center">$<?=$product['price']?></td>
+								        <td class = "cell-center">
 
 								        	<div class="input-group col-md-4">
 									          <span class="input-group-btn">
@@ -113,6 +129,7 @@
 
 						<div class="form-group">
 						  <label for="sel1">Select list:</label>
+						  <input id = "transport_addl" type="hidden" name="transport_addl" value = "0" />
 						  <select class="form-control" id="sel1">
 						    <option value = "0">Select One</option>
 							    <?php if(count($this->data['transport_types']) > 0) :?>
