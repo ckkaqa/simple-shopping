@@ -5,7 +5,9 @@
 	require_once('model/transport_type.php');
 
 	session_start();
-	$_SESSION['balance'] = '100';
+	if(!isset($_SESSION['balance'])){
+		$_SESSION['balance'] = '100';
+	}
 
 	class Main 
 	{
@@ -14,7 +16,7 @@
 		public function index()
 		{
 			$product = new Product();
-			$this->data['products'] = $product->get_all('','products','id,name,price,avg_rating');
+			$this->data['products'] = $product->get_all('','products','id,name,price,avg_rating,thumbnail_name,session_id');
 
 			$cart = new Cart();
 			$this->data['cart_status'] = $cart->get('','cart', 'id, cart_status');
@@ -24,17 +26,19 @@
 
 			$order = New Order();	
 			$query = "SELECT 
-						p.id, p.name, o.quantity,p.price,p.price * o.quantity as total
+						p.id, p.name, o.quantity,p.price,p.price * o.quantity as total,
+						p.thumbnail_name
 					  from products p 
 					  LEFT JOIN orders o 
 					  ON o.product_id = p.id
-					  where o.quantity != 0";
+					  where o.quantity != 0
+					  AND o.is_paid = 0";
 
 			$this->data['orders'] = $order->do_query($query, true);
 
 			if ($_POST){
 				$product_id = $_POST['product_id'];
-				$product_order = $order->get('product_id='.$product_id,'orders','id,quantity');
+				$product_order = $order->get('product_id='.$product_id.' AND is_paid=0','orders','id,quantity');
 
 				if(count($product_order) > 0){
 					$new_quantity = $product_order['quantity'] + 1;

@@ -36,20 +36,50 @@ $(document).ready(function(){
 
 	});
 
+	$("#sel1").on('change', function(){
+		var addl = $("#transport_addl").val();
+
+		total_container = $("#current_payment_container");
+		transport_cost = $(this).val() == 1 ? 0 : 5;
+
+		if(parseFloat(addl) > 0){
+			console.log('its here');
+			new_total = parseFloat(total_container.text()) - parseFloat(addl);
+			total_container.text(new_total);
+			$("#transport_addl").val(0);
+		}else{
+			new_total = parseFloat(total_container.text()) + parseFloat(transport_cost);
+			total_container.text(new_total);
+			$("#transport_addl").val(transport_cost);
+		}
+
+	});
+
 	$(".pay_order").on('click', function(){
 		if($("#sel1").val() != 0){
 			var current = $("#current_payment_container").text();
 			var balance = $("input.balance").val();
 
+			var val = $("#sel1").val();
+			var transport_deduct = val == 1 ? 0 : 5;
+			var now = parseFloat(balance)-parseFloat(current)-transport_deduct;
+
 			if(current > parseFloat(balance)){
 				alert('Insufficient funds!');
 			}else{
-				var val = $("#sel1").val();
-				var transport_deduct = val == 1 ? 0 : 5;
+				request = $.ajax({
+			        url: "ajax_pay.php",
+			        type: "post",
+			        data: {payment: current},
+			        success: function()
+			        {
+			        	location.reload(true);
+			        }
+			    });
 
-				var now = parseFloat(balance)-parseFloat(current)-transport_deduct;
-				$(".balance_container").show();
-				$("#remaining_balance").text((now).toFixed(2));
+				// var now = parseFloat(balance)-parseFloat(current)-transport_deduct;
+				// $(".balance_container").show();
+				// $("#remaining_balance").text((now).toFixed(2));
 			}
 		}else{
 			alert("You have to select transport type");

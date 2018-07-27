@@ -11,7 +11,8 @@
 			$query = "UPDATE 
 						orders 
 					  SET quantity=".$new_quantity." 
-					  WHERE id = ".$_POST['id']."";
+					  WHERE product_id = ".$_POST['id']."
+					  AND is_paid = 0";
 
 			$order->do_query($query);
 			
