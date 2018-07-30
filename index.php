@@ -23,6 +23,7 @@
 
 			$transport_type = new TransportType();
 			$this->data['transport_types'] = $transport_type->get_all('','transport_type','name, price, id');
+			$session_id = session_id();
 
 			$order = New Order();	
 			$query = "SELECT 
@@ -32,13 +33,16 @@
 					  LEFT JOIN orders o 
 					  ON o.product_id = p.id
 					  where o.quantity != 0
-					  AND o.is_paid = 0";
+					  AND o.is_paid = 0
+					  AND o.session_id = '$session_id'";
 
 			$this->data['orders'] = $order->do_query($query, true);
 
 			if ($_POST){
 				$product_id = $_POST['product_id'];
-				$product_order = $order->get('product_id='.$product_id.' AND is_paid=0','orders','id,quantity');
+				$the_product = $product->get('id='.$product_id,'products','*');
+
+				$product_order = $order->get('product_id='.$product_id.' AND is_paid=0 and session_id="$session_id"','orders','id,quantity');
 
 				if(count($product_order) > 0){
 					$new_quantity = $product_order['quantity'] + 1;
@@ -49,13 +53,14 @@
 
 				}else{
 					$query = "INSERT INTO 
-								orders (product_id, quantity)
-							  VALUES (".$product_id.", 1)";
+								orders (product_id, quantity,session_id,per_unit_price)
+							  VALUES (".$product_id.", 1, '$session_id',".$the_product['price'].")";
 				}
 				$order->do_query($query);
 
 				$page = $_SERVER['PHP_SELF'];
 				$sec = "1";
+
 				header("Refresh: $sec; url=$page");
 
 				$this->data['message'] = 'successfully added to cart!';
