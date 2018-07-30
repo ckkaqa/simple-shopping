@@ -28,9 +28,10 @@ $(document).ready(function(){
 	        url: "ajax_post.php",
 	        type: "post",
 	        data: {'quantity': new_quantity, 'id': product_id},
-	        success: function()
+	        success: function(response)
 	        {
-	        	$("#current_payment_container").text(new_total);
+	        	console.log(response);
+	        	$("#current_payment_container").text(response);
 	        }
 	    });
 
