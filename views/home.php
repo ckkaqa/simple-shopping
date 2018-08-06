@@ -30,18 +30,22 @@
 					        	<?=$product['name']?>
 					        	</td>
 					        <td class = "cell-center">
-					        	<div class="btn-group col-md-8 col-sm-5 col-xs-5" data-toggle="buttons">
-				                    <label class="btn btn-default click_rate">
-				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo1" value="1">1</label>
-				                    <label class="btn btn-default click_rate">
-				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo2" value="2">2</label>
-				                    <label class="btn btn-default click_rate">
-				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo3" value="3">3</label>
-				                    <label class="btn btn-default click_rate">
-				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo4" value="4">4</label>
-				                    <label class="btn btn-default click_rate">
-				                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo5" value="5">5</label>
-				                </div>
+					        	<?php if(session_id() != $product['session_id']) : ?>
+						        	<div class="btn-group col-md-8 col-sm-5 col-xs-5" data-toggle="buttons">
+					                    <label class="btn btn-default click_rate">
+					                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo1" value="1">1</label>
+					                    <label class="btn btn-default click_rate">
+					                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo2" value="2">2</label>
+					                    <label class="btn btn-default click_rate">
+					                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo3" value="3">3</label>
+					                    <label class="btn btn-default click_rate">
+					                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo4" value="4">4</label>
+					                    <label class="btn btn-default click_rate">
+					                      <input data-id = "<?=$product['id']?>" type="radio" name="educationalValue" id="edValueRdo5" value="5">5</label>
+					                </div>
+					            <?php else : ?>
+					            	You already rated this product
+				            	<?php endif; ?>
 					        </td>
 					        <td class = "cell-center">
 					        	<?=round($product['avg_rating'],2);?>
