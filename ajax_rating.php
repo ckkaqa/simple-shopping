@@ -17,7 +17,7 @@
 
 			$product_rating->do_query($query);
 
-			$product_ratings = $product_rating->get_all('product_id='.$_POST['id'].' and session_id="'.session_id().'"', 'product_rating', 'rating');
+			$product_ratings = $product_rating->get_all('product_id='.$_POST['id'], 'product_rating', 'rating');
 			$total_rating = 0;
 			$total_rates = 0;
 			if(count($product_ratings) > 0){

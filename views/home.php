@@ -44,11 +44,7 @@
 				                </div>
 					        </td>
 					        <td class = "cell-center">
-					        	<?php if(session_id() == $product['session_id']):?>
-					        		<?=round($product['avg_rating'],2);?>
-					        	<?php else: ?>
-					        		0
-					        	<?php endif;?>
+					        	<?=round($product['avg_rating'],2);?>
 					        </td>
 					        <td class = "cell-center">$<?=$product['price']?></td>
 					        <td class = "cell-center">
