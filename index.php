@@ -42,7 +42,7 @@
 				$product_id = $_POST['product_id'];
 				$the_product = $product->get('id='.$product_id,'products','*');
 
-				$product_order = $order->get('product_id='.$product_id.' AND is_paid=0 and session_id="$session_id"','orders','id,quantity');
+				$product_order = $order->get('product_id='.$product_id.' AND is_paid=0 and session_id="'.$session_id.'"','orders','id,quantity');
 
 				if(count($product_order) > 0){
 					$new_quantity = $product_order['quantity'] + 1;
