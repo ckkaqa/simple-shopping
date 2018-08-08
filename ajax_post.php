@@ -21,7 +21,8 @@
 
 			$order->do_query($query);
 			
-			$total_query = "select SUM(per_unit_price*quantity) as total from orders where session_id = '$session_id' limit 1";
+
+			$total_query = "select SUM(per_unit_price*quantity) as total from orders where session_id = '$session_id' and is_paid = 0 limit 1";
 
 			$total = $order->do_query($total_query, true);
 
